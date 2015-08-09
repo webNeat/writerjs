@@ -4,3 +4,4 @@ about
 build
 user
 *.sublime-*
+user/*.pdf

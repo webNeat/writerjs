@@ -1,0 +1,102 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700,300|Roboto:400,300,500,700|Open+Sans:400,600,700&subset=latin,latin-ext);
+/* Variables */
+/** Colors **/
+@red   : #B03060;
+@orange: #FE9A76;
+@yellow: #FFD700;
+@olive : #32CD32;
+@green : #016936;
+@teal  : #008080;
+@blue  : #0E6EB8;
+@violet: #EE82EE;
+@purple: #B413EC;
+@pink  : #FF1493;
+@brown : #A52A2A;
+@grey  : #A0A0A0;
+/** Title colors **/
+@c1 : #000;
+@c2 : @blue;
+@c3 : @brown;
+@c4 : @green;
+@c5 : @violet;
+@c6 : @orange;
+
+/* Fonts & Color */
+page {
+	font-family: 'Open Sans';
+	font-size: 12pt;
+	font-weight: normal;
+
+	/* Titles */
+	h1, h2, h3, h4, h5, h6 {
+		font-family: Lato;
+		font-weight: 400;
+		margin-top: 0.4cm;
+	}
+	h1 { font-size: 20pt; color: @c1; }
+	h2 { font-size: 18pt; color: @c2; margin-left: 0.2cm; }
+	h3 { font-size: 16pt; color: @c3; margin-left: 0.4cm; }
+	h4 { font-size: 14pt; color: @c4; margin-left: 0.5cm; }
+	h5 { color: @c5; margin-left: 0.5cm; }
+	h6 { color: @c6; margin-left: 0.5cm; }
+
+	/* Header & Footer */
+	.page-header, .page-footer {
+		background: #efefef;
+		line-height: 1cm;
+		font-family: Lato;
+	}
+
+	/* Paragraphs */
+	p {
+		text-align: justify;
+		line-height: 150%;
+		padding-top: 0.5cm;
+		text-indent: 1cm;
+	}
+
+	ul li {
+		margin-left: 1cm;
+		margin-top: 0.1cm;
+		padding-left: 0.3cm;
+		padding-top: 0.3cm;
+		line-height: 150%;
+		text-align: justify;
+	}
+	ul li.with-border {
+		border-left: 2px solid @grey;
+	}
+
+}
+
+/* Cover Page */
+.cover {
+	.logos {
+		.isima {
+			height: 5cm;
+			width: 10cm;
+		}
+		.cern {
+			width: 5cm;
+		}
+	}
+	.heading, .title {
+		margin: 1cm;
+		font-family: Lato;
+		line-height: 150%;
+	}
+	.heading { 
+		font-weight: 500;
+		font-size: 18pt; 
+	}
+	.title { 
+		font-weight: 700;
+		font-size: 30pt;
+	}
+	.bold {
+		font-weight: 700;
+	}
+	.center {
+		text-align: center;
+	}
+}

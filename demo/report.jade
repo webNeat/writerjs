@@ -1,0 +1,122 @@
+section.without-page-numbers.without-header-footer
+	// Cover page
+	page
+		.cover
+			.logos
+				.pull-left
+					img.isima(src="../user/imgs/isima.png")
+					p.no-indent
+						| ISIMA - Campus Universitaire des Cezeaux
+						br
+						| 1, Rue de la Chebarde
+						br
+						| TSA 60125, CS 60026
+						br
+						| 63178 Aubière CEDEX
+				.pull-right
+					img.cern(src="../user/imgs/cern.jpg")
+					p.no-indent
+						| CERN
+						br
+						| Route de Meyrin 385
+						br
+						| Meyrin, Switzerland
+				.clear
+			.empty-line
+			.empty-line
+			.heading.center Engineer Report
+			.heading.center 3rd Year Internship
+			.title.center LHCb Performance and Regression Development
+			.heading.center
+				| Presented by: 
+				span.bold Amine Ben hammou
+			.empty-line
+			.empty-line
+			.col-1-of-2
+				.heading
+					| CERN Supervisor: 
+					.bold Benjamin Couturier
+				.heading
+					| ISIMA Supervisor: 
+					.bold MESNARD Emmanuel
+			.col-1-of-2
+				.heading
+					| Internship duration: 
+					.bold 5 months
+				.heading
+					| Date of presentation: 
+					.bold August 28th 2015
+			.clear
+
+section.roman-page-numbers.without-header-footer
+	// Acknowledgments
+	page
+		h1.no-number Acknowledgments
+	
+	// Figures Table
+	.figures-table
+
+	// Abstract
+	page
+		h1.no-number Abstract
+	
+	// Contents Table
+	page
+		h1.no-number Contents Table
+		contents-table
+
+	// Abbreviations Table
+	page
+		h1.no-number Abbreviations Table
+		abbreviations-table
+
+section.without-header
+	// Introduction
+	page
+		h1.no-number Introduction
+		p.
+			As part of my third year at #[abbr ISIMA : Institut Supérieur d’Informatique, de Modélisation et de leurs Applications], I did my final internship at #[abbr CERN : The European Organization for Nuclear Research]. More specifically, I worked on the #[abbr LHCb : Large Hadron Collider beauty] experiment and participated on the development of LHCb Performance and Regression framework.
+		p The goal of the #[abbr LHCb PR : LHCb Performance and Regression] project is to provide developers with a profiling framework helping them to evaluate their recent changes by runing analysis modules and comparing results. The results can be used as indicator for worsen algorithms due to run-time or memory consumption and thus as knowledge basis for warning mechanism or for project leaders to track the development process from the optimization point of view.
+		p During my internship, I worked on the development of the new version of LHCbPR. My task was to upgrade the web application using AngularJs framework. The new version should provide the same functionalities as the old one and provide a more easy to use user interface. The application should also give developers the ability to add new modules easily and without having to change the code of the core application.
+		p This report will present the different task I have done during my five months internship and the results I obtained. After presenting CERN and LHCb experiment, I will explain the idea of the LCHbPR project and describe the old version of its web application. Then I will present the different parts of the new version. After this I will explain in details how the new frontend web application was made. Finaly I will present the analysis modules made in the new version.
+	page
+		h1 Presentation of CERN and LHCb
+		h2 Presentation of CERN
+		p The European Organization for Nuclear Research (French: Organisation européenne pour la recherche nucléaire), known as CERN (derived from the name "Conseil Européen pour la Recherche Nucléaire") is a European research organization that operates the largest particle physics laboratory in the world. Established in 1954, the organization is based in a northwest suburb of Geneva on the Franco–Swiss border.
+		p The term CERN is also used to refer to the laboratory, which in 2013 had 2,513 staff members, and hosted some 12,313 fellows, associates, apprentices as well as visiting scientists and engineers representing 608 universities and research facilities.
+		p CERN's main function is to provide the particle accelerators and other infrastructure needed for high-energy physics research – as a result, numerous experiments have been constructed at CERN as a result of international collaborations.
+		p CERN is also the birthplace of the World Wide Web. The main site at Meyrin has a large computer facility containing powerful data processing facilities, primarily for experimental-data analysis; because of the need to make these facilities available to researchers elsewhere, it has historically been a major wide area networking hub.
+		h3 Scientific achievements
+		p.no-indent Several important achievements in particle physics have been made through experiments at CERN. They include:
+		ul
+			li 
+				span.bold 1973:  
+				| The discovery of neutral currents in the Gargamelle bubble chamber
+			li 
+				span.bold 1983:  
+				| The discovery of W and Z bosons in the UA1 and UA2 experiments
+			li 
+				span.bold 1989:  
+				| The determination of the number of light neutrino families at the Large Electron–Positron Collider (LEP) operating on the Z boson peak
+			li 
+				span.bold 1995:  
+				| The first creation of antihydrogen atoms in the PS210 experiment
+			li 
+				span.bold 1999:  
+				| The discovery of direct CP violation in the NA48 experiment
+			li 
+				span.bold 2010:  
+				| The isolation of 38 atoms of antihydrogen
+			li 
+				span.bold 2011:  
+				| Maintaining antihydrogen for over 15 minutes
+			li 
+				span.bold 2012:  
+				| A boson with mass around 125 GeV/c2 consistent with long-sought Higgs boson
+	page
+		h2 Presentation of LHCb
+		p The LHCb (standing for "Large Hadron Collider beauty") experiment is one of seven particle physics detector experiments collecting data at the Large Hadron Collider accelerator at CERN. LHCb is a specialized b-physics experiment, that is measuring the parameters of CP violation in the interactions of b-hadrons (heavy particles containing a bottom quark). Such studies can help to explain the Matter-Antimatter asymmetry of the Universe. The detector is also able to perform measurements of production cross sections and electroweak physics in the forward region. Approximately 840 people from 60 scientific institutes, representing 16 countries, form the collaboration who built and operate the detector. As of 2014, the spokesperson for the collaboration is Guy Wilkinson. The experiment is located at point 8 on the LHC tunnel close to Ferney-Voltaire, France just over the border from Geneva.
+
+	page
+		h1 The idea of the LHCbPR project
+		p 
