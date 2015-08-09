@@ -1,0 +1,25 @@
+{
+  "name": "writer",
+  "version": "1.0.0",
+  "authors": [
+    "Amine Ben hammou <webneat@gmail.com>"
+  ],
+  "main": "main.js",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "angular": "~1.4.3",
+    "font-awesome": "~4.4.0",
+    "reset-css": "~2.0.2011012602"
+  }
+}

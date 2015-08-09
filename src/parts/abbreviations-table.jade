@@ -1,0 +1,7 @@
+.empty-line
+div(ng-repeat="a in abbrs | orderBy:'+name'")
+  .col-1-of-5
+    p.bold {{a.name}}
+  .col-4-of-5 
+    p.no-indent {{a.value}}
+  .clear

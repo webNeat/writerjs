@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+var writer = require('../main'),
+    cmd = require('commander');
+
+cmd.version(require('../package.json').version)
+    .usage('[options] <jade-file-path>')
+    .option('<jade-file-path>', "Path of the jade source file")
+    .option('-o, --out [path]', "Path of where to save the PDF")
+    .parse(process.argv);
+
+if(cmd.args.length === 0)
+    cmd.help();
+cmd.out = cmd.out || cmd.args[0].replace(/\.jade/gi, "") + ".pdf";
+
+writer({
+    cwd: process.cwd()
+}).compile(cmd.args[0], cmd.out);

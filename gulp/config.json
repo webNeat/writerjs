@@ -1,0 +1,49 @@
+{
+  "core": {
+    "views": [
+      {
+        "src": "/home/webneat/workspace/writer/src/parts/*.jade",
+        "dest": "/home/webneat/workspace/writer/build/parts"
+      },
+      {
+        "src": "/home/webneat/workspace/writer/src/index.jade",
+        "dest": "/home/webneat/workspace/writer/build"
+      }
+    ],
+    "scripts": {
+      "src": "/home/webneat/workspace/writer/src/app.js",
+      "dest": "/home/webneat/workspace/writer/build/js"
+    },
+    "styles": {
+      "src": "/home/webneat/workspace/writer/src/main.less",
+      "path": ["/home/webneat/workspace/writer/src"],
+      "dest": "/home/webneat/workspace/writer/build/css/main.css"
+    },
+    "imgs": {
+      "src": "/home/webneat/workspace/writer/src/imgs/*",
+      "dest": "/home/webneat/workspace/writer/build/imgs"
+    }
+  },
+  "vendors": {
+    "js": {
+      "src": [
+        "/home/webneat/workspace/writer/bower_components/jquery/dist/jquery.js",
+        "/home/webneat/workspace/writer/bower_components/angular/angular.js"
+      ],
+      "dest": "/home/webneat/workspace/writer/build/js/vendors.js"
+    },
+    "css": {
+      "src": [
+        "/home/webneat/workspace/writer/bower_components/fontawesome/css/font-awesome.css",
+        "/home/webneat/workspace/writer/bower_components/reset-css/reset.css"
+      ],
+      "dest": "/home/webneat/workspace/writer/build/css/vendors.css"
+    },
+    "fonts": {
+      "src": [
+        "/home/webneat/workspace/writer/bower_components/fontawesome/fonts/*"
+      ],
+      "dest": "/home/webneat/workspace/writer/build/fonts"
+    }
+  }
+}

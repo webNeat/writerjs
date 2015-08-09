@@ -1,0 +1,99 @@
+/* Variables */
+@page-width: 21cm;
+@page-height: 29.7cm;
+@page-header-height: 1cm;
+@page-footer-height: 1cm;
+@page-content-padding: 1cm;
+
+/* Sections and Pages */
+
+section page {
+    display: block;
+    width: @page-width;
+    height: @page-height;
+    page-break-after: always;
+}
+
+/** Page header and footer **/
+
+section page {
+    .page-header {
+        height: @page-header-height;
+    }
+
+    .page-footer {
+        height: @page-footer-height;
+    }
+
+    .page-content {
+        height: @page-height - @page-header-height - @page-footer-height;
+        padding: @page-content-padding;
+        overflow: hidden;
+    }
+}
+
+section.without-header page {
+    .page-header {
+        display: none;
+    }
+    .page-content {
+        height: (@page-height - @page-footer-height - 2 * @page-content-padding);
+    }
+}
+
+section.without-footer page {
+    .page-footer {
+        display: none;
+    }
+    .page-content {
+        height: (@page-height - @page-header-height - 2 * @page-content-padding);
+    }
+}
+
+section.without-header-footer page {
+    .page-footer {
+        display: none;
+    }
+    .page-header {
+        display: none;
+    }
+    .page-content {
+        height: @page-height;
+    }
+}
+
+/* Grid */
+.col {
+    float: left;
+    display: block;
+}
+
+.col-1-of-2 { .col; width: 50%; }
+
+.col-1-of-3 { .col; width: 33%; }
+.col-2-of-3 { .col; width: 66%; }
+
+.col-1-of-4 { .col; width: 25%; }
+.col-2-of-4 { .col-1-of-2; }
+.col-3-of-4 { .col; width: 75%; }
+
+.col-1-of-5 { .col; width: 20%; }
+.col-2-of-5 { .col; width: 40%; }
+.col-3-of-5 { .col; width: 60%; }
+.col-4-of-5 { .col; width: 80%; }
+
+/* Utils */
+
+/** Layout **/
+.pull-left { float: left; }
+.pull-right { float: right; }
+.clear { clear:both; }
+.empty-line { display: block; height: 0.5cm; }
+
+/** Text **/
+.bold { font-weight: bold; }
+.no-indent { text-indent: 0cm; }
+.center { text-align: center; }
+
+/* Default and User Themes */
+@import "themes/default.less";

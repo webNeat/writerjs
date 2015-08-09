@@ -1,0 +1,14 @@
+include mixins/all.jade
+
+doctype html
+html
+  head
+    title Writer.js
+    meta(charset="utf-8")
+    link(rel="stylesheet", href="css/vendors.css", media="all")
+    link(rel="stylesheet", href="css/main.css", media="all")
+    link(rel="stylesheet", href="../user/theme.css", media="all")
+  body(ng-app="writer")
+    include ../user/doc.jade
+    script(src="js/vendors.js")
+    script(src="js/app.js")
