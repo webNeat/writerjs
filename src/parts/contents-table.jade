@@ -1,5 +1,5 @@
 ul
-  li(ng-repeat="c in contents")
+  li(ng-repeat="c in getContents() track by $index", class="level-{{c.level}}")
     | {{ c.title }}
     .pull-right {{ c.page }}
     .clear

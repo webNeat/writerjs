@@ -18,7 +18,8 @@ $.fn.hasOverflow = function() {
 
 /* Document handeling */
 
-var app = angular.module('writer', []).run(function($rootScope){
+var app = angular.module('writer', [])
+  .run(function($rootScope){
   $rootScope.abbrs = [];
   $rootScope.abbrNames = [];
   $rootScope.contents = [];
@@ -87,7 +88,24 @@ app.directive('abbreviationsTable', function($rootScope){
 app.directive('contentsTable', function($rootScope){
   return {
     restrict: 'E',
-    templateUrl: 'parts/contents-table.html'
+    templateUrl: 'parts/contents-table.html',
+    scope: {},
+    link: function(scope, element, attrs){
+      var start = 0;
+      if(attrs.start !== undefined)
+        start = parseInt(attrs.start);
+      var end = $rootScope.contents.length - 1;
+      if(attrs.end !== undefined)
+        end = Math.min(end, parseInt(attrs.end));
+      console.log('start: ' + start + ' & end:' + end);
+      scope.getContents = function(){
+        var list = [];
+        for(var i = start; i <= end; i ++)
+          list.push($rootScope.contents[i]);
+        console.log('Contents from ' + start + ' to ' + end + ' are: ', list);
+        return list;
+      }
+    }
   };
 });
 
@@ -136,7 +154,13 @@ app.run(function($rootScope, $document, $timeout){
     // Adding title to contents table
     $rootScope.contents.push({
       title: text,
-      page: $page.attr('data-page-number')
+      page: $page.attr('data-page-number'),
+      level: level
     });
   });
+
+  $('img').each(function(){
+    $(this).attr('src', '../user/imgs/' + $(this).attr('src'));
+  });
+  
 });
