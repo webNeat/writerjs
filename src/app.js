@@ -24,7 +24,6 @@ var app = angular.module('writer', [])
   $rootScope.abbrNames = [];
   $rootScope.contents = [];
   $rootScope.figures = [];
-  $rootScope.yatta = "Baaka";
 });
 
 // Page
@@ -109,6 +108,29 @@ app.directive('contentsTable', function($rootScope){
   };
 });
 
+// Figures Table
+app.directive('figuresTable', function($rootScope){
+  return {
+    restrict: 'E',
+    templateUrl: 'parts/figures-table.html',
+    scope: {},
+    link: function(scope, element, attrs){
+      var start = 0;
+      if(attrs.start !== undefined)
+        start = parseInt(attrs.start);
+      var end = $rootScope.figures.length - 1;
+      if(attrs.end !== undefined)
+        end = Math.min(end, parseInt(attrs.end));
+      scope.getFigures = function(){
+        var list = [];
+        for(var i = start; i <= end; i ++)
+          list.push($rootScope.figures[i]);
+        return list;
+      }
+    }
+  };
+});
+
 app.run(function($rootScope, $document, $timeout){
   // Numbering pages
   var romanNumbers = ['', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x']
@@ -161,6 +183,19 @@ app.run(function($rootScope, $document, $timeout){
 
   $('img').each(function(){
     $(this).attr('src', '../user/imgs/' + $(this).attr('src'));
+  });
+
+  var figureNumber = 1;
+  $('.figure-title').each(function(){
+    var name = 'Figure ' + figureNumber + ': ' + $(this).text();
+    $(this).html(name);
+    var fig = {
+      name: name,
+      page: $(this).parents('page').attr('data-page-number')
+    };
+    console.log(fig);
+    $rootScope.figures.push(fig);
+    figureNumber ++;
   });
   
 });

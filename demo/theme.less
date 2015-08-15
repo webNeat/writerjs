@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Lato:400,700,300|Roboto:400,300,500,700|Open+Sans:400,600,700&subset=latin,latin-ext);
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700,300|Oxygen+Mono|Open+Sans:400,600,700&subset=latin,latin-ext);
 /* Variables */
 /** Colors **/
 @red   : #B03060;
@@ -47,21 +47,26 @@ page {
 		font-family: Lato;
 	}
 
+  /* Content */
+  .page-content {
+    padding: 1.5cm;
+  }
+
 	/* Paragraphs */
 	p {
 		text-align: justify;
 		line-height: 150%;
-		padding-top: 0.5cm;
-		text-indent: 1cm;
-	}
+		padding-top: 0.2cm;
+		text-indent: 0.5cm;
+  }
 
-	ul li {
-		margin-left: 1cm;
-		margin-top: 0.1cm;
-		padding-left: 0.3cm;
-		padding-top: 0.3cm;
-		line-height: 150%;
-		text-align: justify;
+  ul li {
+    margin-left: 1cm;
+    margin-top: 0.1cm;
+    padding-left: 0.3cm;
+    padding-top: 0.3cm;
+    line-height: 150%;
+    text-align: justify;
 	}
 	ul li.with-border {
 		border-left: 2px solid @grey;
@@ -69,16 +74,18 @@ page {
   li.level-1 {
     font-weight: bold;
   }
-  li.level-2 { padding-left: 0.7cm; }
-  li.level-3 { padding-left: 1cm; }
-  li.level-4 { padding-left: 1.3cm; }
-  li.level-5 { padding-left: 1.6cm; }
-  li.level-6 { padding-left: 2cm; }
+  li.level-2 { margin-left: 0.7cm; }
+  li.level-3 { margin-left: 1cm; }
+  li.level-4 { margin-left: 1.3cm; }
+  li.level-5 { margin-left: 1.6cm; }
+  li.level-6 { margin-left: 2cm; }
 
   .figure {
     margin: 0.3cm 0cm;
     background: @grey;
     border: 2px solid @grey;
+    overflow: hidden;
+    text-align: center;
     img {
       max-width: 100%;
     }
@@ -88,10 +95,28 @@ page {
     }
   }
 
+  pre[class*="language-"] {
+    font-family: 'Oxygen Mono';
+    overflow: hidden;
+    code {
+      font-family: 'Oxygen Mono';
+      font-size: 10.5pt;
+    }
+  }
+
   .right-marged { margin-right: 0.3cm; }
   .left-marged { margin-left: 0.3cm; }
   .top-marged { margin-top: 0.3cm; }
   .bottom-marged { margin-bottom: 0.3cm; }
+
+  tag {
+    display: inline-block;
+    padding: 0cm 0.2cm;
+    margin: 0.1cm;
+    background: lighten(@grey, 20%);
+    border-radius: 5px;
+    text-indent: 0cm;
+  }
 
 }
 

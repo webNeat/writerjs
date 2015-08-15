@@ -2,3 +2,12 @@ mixin image(src, title)
   .figure
     img(src=src)
     .figure-title=title
+
+mixin code(lang, title, indent)
+  if !indent
+    - indent = 3
+  .figure
+    pre(style="margin-left: -#{indent}cm;")
+      code(class="language-#{lang}", ng-non-bindable)
+        block
+    .figure-title=title

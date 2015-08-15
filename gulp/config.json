@@ -28,7 +28,8 @@
     "js": {
       "src": [
         "/home/webneat/workspace/writer/bower_components/jquery/dist/jquery.js",
-        "/home/webneat/workspace/writer/bower_components/angular/angular.js"
+        "/home/webneat/workspace/writer/bower_components/angular/angular.js",
+        "/home/webneat/workspace/writer/vendors/prism.js"
       ],
       "dest": "/home/webneat/workspace/writer/build/js/vendors.js"
     },

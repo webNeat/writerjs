@@ -52,9 +52,11 @@ section.roman-page-numbers.without-header-footer
   // Acknowledgments
   page
     h1.no-number Acknowledgments
-  
+    p 
   // Figures Table
-  .figures-table
+  page
+    h1.no-number Figures Table
+    figures-table
 
   // Abstract
   page
@@ -66,7 +68,10 @@ section.roman-page-numbers.without-header-footer
     contents-table(start="0", end="25")
   page
     .empty-line
-    contents-table(start="26")
+    contents-table(start="26", end="51")
+  page
+    .empty-line
+    contents-table(start="52")
 
   // Abbreviations Table
   page
@@ -78,56 +83,28 @@ section.without-header
   page
     h1.no-number Introduction
     p.
-      As part of my third year at #[abbr ISIMA : Institut Supérieur d’Informatique, de Modélisation et de leurs Applications], I did my final internship at #[abbr CERN : The European Organization for Nuclear Research]. More specifically, I worked on the #[abbr LHCb : Large Hadron Collider beauty] experiment and participated on the development of LHCb Performance and Regression framework.
-    p The goal of the #[abbr LHCb PR : LHCb Performance and Regression] project is to provide developers with a profiling framework helping them to evaluate their recent changes by runing analysis modules and comparing results. The results can be used as indicator for worsen algorithms due to run-time or memory consumption and thus as knowledge basis for warning mechanism or for project leaders to track the development process from the optimization point of view.
-    p During my internship, I worked on the development of the new version of LHCbPR. My task was to upgrade the web application using AngularJs framework. The new version should provide the same functionalities as the old one and provide a more easy to use user interface. The application should also give developers the ability to add new modules easily and without having to change the code of the core application.
-    p This report will present the different task I have done during my five months internship and the results I obtained. After presenting CERN and LHCb experiment, I will explain the idea of the LCHbPR project and describe the old version of its web application. Then I will present the different parts of the new version. After this I will explain in details how the new frontend web application was made. Finaly I will present the analysis modules made in the new version.
+      As part of my third year at #[abbr ISIMA : Institut Supérieur d’Informatique, de Modélisation et de leurs Applications], I did my final internship at #[abbr CERN : The European Organization for Nuclear Research]. More specifically, I worked on the #[abbr LHCb : Large Hadron Collider beauty] experiment and participated on the development of LHCb Performance and Regression framework (LHCb PR).
+    p The goal of the #[abbr LHCb PR : LHCb Performance and Regression] project is to provide developers with a profiling framework helping them to evaluate their recent changes by running analysis modules and comparing results. The results can be used to detect fails in functionalities or performance issues.
+    p During my internship, I worked on the development of the new version of LHCbPR. My tasks were to upgrade the web application using AngularJs framework and the development of analysis modules for the new version. This version should provide the same functionalities as the old one and improve the user interface. The application should also give developers the ability to add new modules easily and without having to change the code of the core application.
+    p This report presents the different task I have done during my five months internship and the results I obtained. After presenting CERN and LHCb experiment, I will explain the idea of the LCHbPR project and describe the old version of its web application. Then I will present the different parts of the new version. After this I will explain in details how the new frontend web application was made. Finaly I will present the analysis modules made in the new version.
   page
     h1 Presentation of CERN and LHCb
     h2 Presentation of CERN
-    p The European Organization for Nuclear Research (French: Organisation européenne pour la recherche nucléaire), known as CERN (derived from the name "Conseil Européen pour la Recherche Nucléaire") is a European research organization that operates the largest particle physics laboratory in the world. Established in 1954, the organization is based in a northwest suburb of Geneva on the Franco–Swiss border.
-    p The term CERN is also used to refer to the laboratory, which in 2013 had 2,513 staff members, and hosted some 12,313 fellows, associates, apprentices as well as visiting scientists and engineers representing 608 universities and research facilities.
-    p CERN's main function is to provide the particle accelerators and other infrastructure needed for high-energy physics research – as a result, numerous experiments have been constructed at CERN as a result of international collaborations.
-    p CERN is also the birthplace of the World Wide Web. The main site at Meyrin has a large computer facility containing powerful data processing facilities, primarily for experimental-data analysis; because of the need to make these facilities available to researchers elsewhere, it has historically been a major wide area networking hub.
-    h3 Scientific achievements
-    p.no-indent Several important achievements in particle physics have been made through experiments at CERN. They include:
-    ul
-      li 
-        span.bold 1973:  
-        | The discovery of neutral currents in the Gargamelle bubble chamber
-      li 
-        span.bold 1983:  
-        | The discovery of W and Z bosons in the UA1 and UA2 experiments
-      li 
-        span.bold 1989:  
-        | The determination of the number of light neutrino families at the Large Electron–Positron Collider (LEP) operating on the Z boson peak
-      li 
-        span.bold 1995:  
-        | The first creation of antihydrogen atoms in the PS210 experiment
-      li 
-        span.bold 1999:  
-        | The discovery of direct CP violation in the NA48 experiment
-      li 
-        span.bold 2010:  
-        | The isolation of 38 atoms of antihydrogen
-      li 
-        span.bold 2011:  
-        | Maintaining antihydrogen for over 15 minutes
-      li 
-        span.bold 2012:  
-        | A boson with mass around 125 GeV/c2 consistent with long-sought Higgs boson
-  page
+    p CERN is the European Organization for Nuclear Research. Physicists and engenieers are working in this organization to discover how the universe works by studying the basic constituents of matter - the fundamental particles. Particles are made to collide together using the largest machine in the world to see how they interact and try to figure out the fundamental laws of nature. It was founded in 1954, and it sits astride the Franco-Swiss border near Geneva. It was one of Europe's first joint ventures and now has 21 member states.
+    p Before they collide, the speed of particles is increased to close the speed of light using a sequence of accelerators. The largest accelerator is called the Large Hadron Collider (#[abbr LHC : Large Hadron Collider]) which is a ring with a perimeter of 27km. Detectors are used in the locations of collisions to observe and record the results.
+    p There are seven experiments running on the LHC. The biggest four are: ATLAS, #[abbr CMS :  Compact Muon Solenoid] (Compact Muon Solenoid), #[abbr ALICE :  Compact Muon Solenoid] (A Large Ion Collider Experiment) and LHCb (Large Hadron Collider beauty). ATLAS and CMS are general-purpose experiments investigating the largest range of physics possible. ALICE and LHCb have detectors specialized for focussing on specific phenomena.
     h2 Presentation of LHCb
-    p The LHCb (standing for "Large Hadron Collider beauty") experiment is one of seven particle physics detector experiments collecting data at the Large Hadron Collider accelerator at CERN. LHCb is a specialized b-physics experiment, that is measuring the parameters of CP violation in the interactions of b-hadrons (heavy particles containing a bottom quark). Such studies can help to explain the Matter-Antimatter asymmetry of the Universe. The detector is also able to perform measurements of production cross sections and electroweak physics in the forward region. Approximately 840 people from 60 scientific institutes, representing 16 countries, form the collaboration who built and operate the detector. As of 2014, the spokesperson for the collaboration is Guy Wilkinson. The experiment is located at point 8 on the LHC tunnel close to Ferney-Voltaire, France just over the border from Geneva.
+    p The LHCb experiment is one of seven particle physics detector experiments collecting data at the LHC. This experiment is trying to answer the question: "Why our universe is composed almost entirely of matter, but no antimatter ?".
+    p Antimatter is made of anti-particules. An anti-particule of a particle p is a particle having exactly the opposite properties of p. When p and its anti-particule fusion, they cancel each other and produce pure energy. We think that just before the big bang, all the energy of the universe was compressed in one small point. So, at the moment of the big bang, this energy should have given the same quantity of matter and antimatter. The question is why do we observe only matter in our current universe ?
+    p When the LHCb experiment is running, the detector registers about 10 million collisions per second. It is impossible to record all of these collisions.So the solution was to use an electronic system that will select the best and the most interesting collisions to be recorded. The recorded events are stored in binary files into disks. Then Physics are using specifique softwares to extract and study data on these files.
 
+  page
     h1 The LHCbPR project
     h2 What is LHCbPR
-    p LHCbPR is a service designed to record important measurements about releases of the LHCb applications. These applications receive input in the form of configuration files and produce, as an output, various information. LHCbPR is not intended to actually run the jobs, but instead to manage and track the bulk of information produced by storing them into the database. The LHCbPR is a framework that allows LHCb software developer to push information for a run of their code(job charactetistics, results, performance measures, files) to a central database. Developers are also able perform analysis of the data across versions, runing options and plateforms.
+    p LHCb Performance and Regression (LHCbPR) is a service designed to record important measurements about results of integration and performance tests of the LHCb applications. These applications receive input in the form of configuration files and produce, as an output, various information. LHCbPR is not intended to actually run the jobs, but instead to manage and track the job results. The LHCbPR is a framework that allows LHCb software developer to push information for a run of their code(job charactetistics, results, performance measures, files) to a central database. The main goal is to give developers the ability to perform analysis of the data across versions, running options and plateforms.
     h2 Why LHCbPR
-    p In the past, in order for a user working group to run a job, they had to execute a job for a specific application -using a configuration file-, gather the results and then run their own analysis on the produced sample. Finally, when such a process was complete, they needed to find a way to publish their results. Often ending up with serving static documents such as HTML, CSV or e-mail.
-    p LHCbPR was conceived as a tool to reliably organize the process of configuring and monitoring a job execution. The framework, solves the problem of gathering the results of a job execution, by providing the user a complete script that, when executed, can produce the desired output, according to a configuration file. This script, also includes a list of handlers that collect the defined aspects of the job results and push them to the database in a uniformed way. 
-    p By collecting the results in such an organized manner, it provides the solution to the second problem, mentioned above; the running of the analysis. 
-  page
+    p In the past, the users had to run test jobs manually using a configuration file. A job could be run for a specific application and results should be saved by the user. These results was shared between users using static documents such as HTML, CSV or e-mail.
+    p LHCbPR was conceived as a tool to reliably organize the process of configuring and monitoring a test job execution. The framework, solves the problem of gathering the results. It provides a complete script that can produce the desired output, according to a configuration file. This script uses a list of handlers that collect the defined aspects of the job results and push them to the database. By collecting the results in such an organized manner, it provides the solution to the second problem, mentioned above; the running of the analysis.
     p Since, all the data are stored in the database, the framework provides an abstract and easy way to deploy algorithms and functions which perform analysis on the saved data.
     p Finally, LHCbPR handles the presentation of the collected data by providing a set of templates for the creation of web pages specific to each analysis and customized to the preferences of each user.
     h2 Users of LHCbPR
@@ -135,11 +112,11 @@ section.without-header
     p The administrators group is responsible for the integrity of the collected data and the efficiency of the service. They maintain and support the system, making sure the application is functional and available to the end users.
     p Application developers are the users who actively design and develop modules for the framework, thus extending the functionality of the application.
     p Finally, the end users are the main body of the users of the service. They put the tools provided by the application developers to practical use and their job results are populating the database.
+  page
     h2 The old LHCbPR application
     p As my task is to upgrade the LHCbPR web application. I first started by reviewing the old version.
     p The LHCbPR follows the architectural model of three tiered programming. #[abbr 3TP : Three Tiered Programming] provides a way to theoretically categorize the components of an application, providing abstract modularity. In essence the 3TP model is a client-server architecture which is composed of three layers. Namely, the presentation tier, the functional process logic tier and the data storage tier. These tiers communicate with one another in a strictly defined way, which allows the developer to independently maintain each tier. In most practical applications of the model the presentation layer includes all forms of user interaction with the service. The process logic tier encompasses the whole of the application functionality, while the data storage tier handles the flow of the information from and to the data source (in most cases a database). 
     p The Django framework was used to create the LHCbPR web application and the 3TP model was applied as follows:
-  page
     p.no-indent
       span.bold Presentation Layer: 
       | A set of web pages using the jQuery library.
@@ -151,59 +128,78 @@ section.without-header
       | An Oracle database storing all the applications and jobs informations and results.
 
     h1 New LHCbPR application
-    p Instead of trying to improve the old version of the LHCbPR application, we started the new version from scratch to be able to use the new technologies of web development which was not used in the old version like Gulp task runner and the AngularJS framework.
+    p Instead of trying to improve the old version of the LHCbPR application, we started the new version from scratch to be able to use the new technologies of web development which was not used in the old version like Gulp task runner and the AngularJS framework. This framework enables us to build a rich client application using REST protocol for data access.
     h2 Architecture
-    p The new version follows the 3TP model too, but in a more modern way. In particular, the presentation layer and the application logic layer are no longer in the same application. They are now two totaly separated applications communicating using a REST API.
+    p The new version follows the 3TP model too, but in a more modern way. In particular, the presentation layer and the application logic layer are no longer in the same application. They are now two totaly separated applications communicating using a REST API. ...
     h2 Data Storage Layer: Database
     p We kept the same database as the old version but made some little changes to it. The new database entity relation schema is presented on figure in the next page. The main entities are the following:
     ul
       li
         span.bold Application: 
-        | an application is described by a name and has many versions
+        | represents a software used by LHCb to process or analyse data. it is described by a name and has many versions
       li
         span.bold Application Version: 
-        | a version belongs to an application. It can be a nightly version or not and can have multiple slots.
+        | a version belongs to an application. It can be a release or a nightly build (intermediate version compiled every night).
+  page
+    +image('ers.png', 'Database Entity Relation Schema')
+    ul
       li
         span.bold Job Description: 
-        | This entity describes a group of jobs by specifying the application version, the project setup, the runing option, the plateforms in which jobs will be executed and the handlers that will collect results.
+        | This entity describes all that is needed to define a job. In particular, it specifies the application version, the project setup, the running option, the plateforms in which jobs will be executed and the handlers that will collect results.
       li
         span.bold Handler: 
-        | a handler has a name and a description. It is linked to multiple job descriptions via the "job handler" pivot table. It is also linked to many jobs via the "handler result" pivot table.
+        | a handler has a name and a description. It gethers data after the job has been run. It is linked to multiple job descriptions via the "job handler" pivot table. It is also linked to many jobs via the "handler result" pivot table.
       li
         span.bold Option: 
-        | describes the command-line options to pass when runing the jobs. I has a many to many relation with the attribute entity.
-      li
-        span.bold Attribute: 
-        | an attribute can belong to multiple attribute groups. It also has a many to many relation with the job entity via the jobresult. Job results can have different types (integer, float, file, string). 
+        | describes the command-line options to pass when running the jobs. I has a many to many relation with the attribute entity.
   page
     ul
       li
+        span.bold Attribute: 
+        | an attribute can belong to multiple attribute groups. It also has a many to many relation with the job entity via the jobresult. Job results can have different types (integer, float, file, string). 
+      li
         span.bold Job: 
-        | This is the main entity that describes a job. A job has a start time, an end time, and a status. It belongs to a job description and is run in a specifique plateform and host. Their results can be collected by multiple handlers and it can have multiple results. Every job result concerns an attribute.
-    +image('ers.png', 'Database Entity Relation Schema')
+        | This is the main entity that describes a job that has been run. It has a start time, an end time, and a status. It belongs to a job description and is run in a specifique plateform and host. Their results can be collected by multiple handlers and it can have multiple results. Every job result concerns an attribute.
     h2 Application Logic Layer: REST API
     p This layer is made using the #[span.bold Django REST framework] which is a powerful and flexible toolkit that makes it easy to build Web APIs using Python language. Making the application logic layer as an API is the best choice to keep layers totaly independent. This way we can build multiple frontend applications ( one for the web, an other for mobiles for example ) based on the same API.
-  page
-    p #[abbr REST : Representational State Transfer] stands for #[span.bold Representational State Transfer]. (It is sometimes spelled "ReST") It relies on a stateless, client-server, cacheable communications protocol -- and in virtually all cases, the HTTP protocol is used. REST is an architecture style for designing networked applications.
-    p In our case, the frontend application send requests to the API and the API responds without the requested data in #[abbr JSON : JavaScript Object Notation] (JavaScript Object Notation) format which is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. It is based on a subset of the JavaScript programming language which make it easy to parse it as our frontend is written using JavaScript.
+    p #[abbr REST : Representational State Transfer] stands for #[span.bold Representational State Transfer]. (It is sometimes spelled "ReST") It relies on a stateless, client-server, cacheable communications protocol. In virtually all cases, the HTTP protocol is used. REST is an architecture style for designing networked applications.
+    p In our case, the frontend application send requests to the API and the API responds with the requested data in #[abbr JSON : JavaScript Object Notation] (JavaScript Object Notation) format which is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. It is based on a subset of the JavaScript programming language which make it easy to parse it, as our frontend is written using JavaScript.
     h2 Frontend
-    p The frontend application is made using the AngularJS javascript framework which add many features to #[abbr HTML : HyperText Markup Language] to make a new generation of web applications. Instead of starting the web application from scratch, we have used a template called #[span.bold Angle] which offers a collection of ready to use stylings and tools based on AngularJs and many javascript libraries. More detailled description of the Angle features is described in the next section.
+    p The frontend application is made using the AngularJS javascript framework which add many features to #[abbr HTML : HyperText Markup Language] to make a new generation of web applications (single-page web applications). Instead of starting the web application from scratch, we have used a template called #[span.bold Angle] which offers a collection of ready to use styles and tools based on AngularJs and many javascript libraries. A More detailled description of the Angle features can be found in the next section.
+
   page
     h1 Frontend Development
-    h2 Used Tools
-    p We have used the Angle template as a starting point for the development of the frontend application. This template includes AngularJS, jQuery and many other libraries. It offers also some usefull predefined Angular directives and services. In order to understand the structure of this template and be able to customize it, a good understanding of AngularJS architecture and terms is essential. The most important tools used to build the frontend application are the following:
+    h2 Tools
+    p We have used the Angle template as a starting point for the development of the frontend application. This template includes AngularJS, jQuery and many other libraries. It offers also some useful predefined Angular directives and services. In order to understand the structure of this template and be able to customize it, a good understanding of AngularJS architecture and terms is essential. The most important tools used to build the frontend application are the following:
     h3 AngularJS
     .col-1-of-5
       img.responsive(src="angularjs.png")
     .col-4-of-5
-      p.no-indent #[span.bold AngularJS] is an open-source web application framework maintained by Google and by a community of individual developers and corporations to address many of the challenges encountered in developing single-page applications. It aims to simplify both the development and the testing of such applications by providing a framework for client-side web application which is able to add new reusable features to HTML.
+      p.no-indent #[span.bold AngularJS] is an open-source web application framework maintained by Google and by a community of developers and corporations to address many of the challenges encountered when developing single-page applications. It aims to simplify both the development and the testing of such applications by providing a framework for client-side web application which is able to add new reusable features to HTML.
+        br
+        | Official Website: 
+        a(href="https://angularjs.org/") https://angularjs.org
     .clear
     h3 jQuery
     .col-1-of-5
       img.responsive.right-marged.top-marged(src="jquery.gif")
     .col-4-of-5
-      p.no-indent The usage of AngularJS does not eliminate jQuery which is the most used javascript library in web applications today. It is designed to make it easier to navigate a document, select #[abbr DOM : Document Object Model] (Document Object Model) elements, create animations, handle events, and develop  #[abbr Ajax :  Asynchronous JavaScript and XML] (Asynchronous JavaScript and XML). jQuery also provides capabilities for developers to create plug-ins on top of the JavaScript library. This enables developers to create abstractions for low-level interaction and animation, advanced effects and high-level, theme-able widgets.
+      p.no-indent The usage of AngularJS does not eliminate jQuery which is the most used javascript library in web applications today. It is designed to simplify document navigation, #[abbr DOM : Document Object Model] (Document Object Model) elements selection, animations, events handeling, and #[abbr Ajax :  Asynchronous JavaScript and XML] (Asynchronous JavaScript and XML) calls. jQuery also provides capabilities for developers to create plug-ins on top of the JavaScript library. This enables developers to create abstractions for low-level interaction and animation, advanced effects and high-level, theme-able widgets.
+        br
+        | Official Website: 
+        a(href="https://jquery.com/") https://jquery.com
     .clear
+    h3 Git
+    .col-1-of-5
+      img.responsive.right-marged.top-marged(src="git.png")
+    .col-4-of-5
+      p.no-indent Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency. It helps to keep track of every change made on the code and rollback when needed. It is also the best way to work on group on the same project.
+        br
+        | Official Website: 
+        a(href="https://git-scm.com") https://git-scm.com
+    .clear
+
+  page
     h3 npm
     .col-1-of-5
       img.responsive.right-marged.top-marged(src="npm.png")
@@ -211,29 +207,41 @@ section.without-header
       p.no-indent #[abbr npm : Node Package Manager] is package manager for JavaScript, and is the default one for NodeJS packages. NodeJS gives the possibility to run the javascript on the server side making it possible to write javascript files and run them from the terminal. 
     .clear
     p After the release of NodeJS on 2009, developers started making reusable node modules and the #[span.bold node package manager] (npm) was created on 2011 to make it easy to share and reuse node modules. But now it is used to manage all types of javascript modules and packages.
-    p npm is used in our application to manage packages such as Bower and Gulp.
-    
-  page
+      br
+      | Official Website: 
+      a(href="https://www.npmjs.com/") https://www.npmjs.com
+    p npm is used in our application to manage packages such as Bower and Gulp.    
     h3 Bower
     .col-1-of-5
       img.responsive.right-marged.top-marged(src="bower.png")
     .col-4-of-5
       p.no-indent Bower is a package manager for frontend components such as #[abbr CSS : Cascading Style Sheets] and javascript libraries. It is installed using npm as it is a node module. Bower does not replace npm. npm manages server side packages will bower manages frontend packages.
+        br
+        | Official Website: 
+        a(href="https://www.bower.io/") https://www.bower.io
     .clear
     h3 Gulp
     .col-1-of-5
       img.responsive.right-marged.top-marged(src="gulp.png")
     .col-4-of-5
-      p.no-indent Gulp is a javascript task runner or build tool. It can run several tasks automatically to improve the developer workflow. Tasks are written in javascript and can do various things from concatenating multiple files into one to compiling a less code (the less language is presented below) and compressing the resulting CSS code and storing it in a destination file.
-      p.no-indent Gulp uses Steams (the NodeJS objects representing a buffer of data) during the task operations. So there is no need to store intermediate results in temporary files. It also runs the tasks in parallel which is more efficient. Dependencies between tasks can be declared to force a task not to start before the ending of an other one. Gulp can also watch files and run corresponding tasks when a file is changed.
+      p.no-indent Gulp is a javascript task runner or build tool. It can run several tasks automatically to improve the developer workflow. Tasks are written in javascript and can do various jobs from concatenating multiple files into one to compiling a Less source code (the less language is presented below) and compressing the resulting CSS code and storing it in a destination file.
+      p.no-indent Gulp uses Steams (the NodeJS objects representing a buffer of data) during the task operations. So there is no need to store intermediate results in temporary files. It also runs the tasks in parallel which is more efficient. Dependencies between tasks can be declared to force a task not to start before the end of an other one. Gulp can also watch files and run corresponding tasks when a file is changed.
+        br
+        | Official Website: 
+        a(href="https://www.gulpjs.com/") https://www.gulpjs.com
     .clear
     h3 jade
     .col-1-of-5
       img.responsive.right-marged.top-marged(src="jade.png")
     .col-4-of-5
       p.no-indent Jade is a templating language which produces HTML code from a less verbose syntax. The Jade syntax is more easy to write, read and maintain. More than that, the Jade language has many features which make the code dynamic and reusable.
-      p.no-indent All the HTML files in our frontend application are written using Jade and compiled by Gulp.
+        br
+        | Official Website: 
+        a(href="https://www.jade-lang.com/") https://www.jade-lang.com
     .clear
+
+  page
+    p.no-indent All the HTML files in our frontend application are written using Jade and compiled by Gulp.
     h3 less
     .col-1-of-5
       img.responsive.right-marged.top-marged(src="less.png")
@@ -241,29 +249,309 @@ section.without-header
       p.no-indent Less is a CSS pre-processor, meaning that it extends the CSS language, adding features that allow variables, mixins, functions and many other techniques that allow the developer to make CSS that is more maintainable, themable and extendable.
     .clear
       p.no-indent There are also many 3rd party tools that help to compile less files and watch for changes. Gulp is one of these tools.
+        br
+        | Official Website: 
+        a(href="https://www.lesscss.org/") https://www.lesscss.org
+
+    h2 Files structure
+    p After modifications made to the initial template, the files structure of the application is the following:
+    +code('bash', 'The files structure of the frontend application').
+      app/               # the build folder
+      master/            # the sources folder
+          |-- bower_components/   # bower installed packages
+          |-- jade/               # the core application views
+          |-- js/                 # the core application js files
+          |-- less/               # the core application styles
+          |-- modules/            # modules folder
+          |-- node_modules/       # NodeJs installed modules
+          |-- bower.json          # bower manifest file
+          |-- gulpfile.js         # Gulp tasks definition
+          |-- package.json        # npm manifest file
+          |-- vendor.base.json    # packages to load with the application
+          |-- vendor.json         # packages that will be loaded when needed
+      vendor/            # the libraries folder
+      index.html
+
+    p All the application source code is inside the master directory. Under this directory we find:
+    ul
+      li
+        tag bower_components: 
+        | When we install a package using Bower, it is stored into this directory. Then when Gulp is run, it takes all needed Javascript and CSS files from this directory, minify them (by removing all optional white spaces and renaming variables and functions with short names in order to reduce the file size) and store them into the libraries directory named #[tag vendor].
   page
-    h2 The starting template
-    p 
-    h3 Setup steps 
-    h3 Files structure
-    h3 Included Libraries
-    h3 Lazy Loading
-    h3 Predefined Directives
-    h3 Gulp tasks
+    ul 
+      li Gulp knows which files are needed from the vendor.base.json and vendor.json. vendor.base.json  lists the packages to be loaded with the core application (like Angular and jQuery). vendor.json lists other needed packages, which will be loaded specifically depending on the visited module.
+      li
+        tag jade: 
+        | The core view files are stored into this directory. Views are written using the Jade language and compiled into HTML files by Gulp. The compiled HTML files are stored into the app/views directory.
+      li
+        tag js: 
+        | This directory contains all the core javascript files of the application. Since AngularJS is used to build this application; we find controllers, directives and services directories inside the js one following the Angular conventions. Additional javascript classes are stored inside the js/classes folder. One of this classes is the Module class which will be used to create modules for the application.
+      li
+        tag less: 
+        | This directory holds all application style definitions. They are written using a CSS pre-processor called Less. Gulp will compile all this files into CSS files and store them in app/css directory.
+      li
+        tag modules: 
+        | This directory contains source code of modules. the module structure is detailed below.
+      li
+        tag node_modules: 
+        | NodeJs modules installed using npm install will be stored into this directory.
+      li
+        tag gulpfile.js: 
+        | This file contains the Gulp tasks definitions.
+
+    h2 Tools installation
+    ul 
+      li 
+        span.bold 1. Setup NodeJS and npm: 
+        | installation instructions for different systems are described in this link: 
+        a(href="https://nodejs.org/download") https://nodejs.org/download
+        br
+        | In my case, I am using Ubuntu 14.04 and the setup commands are:
+        +code('bash', 'NodeJS and npm installation commands on Ubuntu', 4).
+          # adding the NodeSource PPA
+          curl --silent --location https://deb.nodesource.com/setup_0.12 | sudo bash - 
+          # update packages list
+          sudo apt-get update
+          # installing NodeJS (npm is installed with it automatically)
+          sudo apt-get install --yes nodejs
   page
-    h2 Modifications made to the template
+    ul
+      li 
+        span.bold 2. Setup Git: 
+        | Git can be installed on Ubuntu from the default package manager: 
+        +code('bash', 'Git installation command on Ubuntu', 0.1).
+          sudo apt-get install git
+      li 
+        span.bold 3. Setup Bower and Gulp: 
+        | Bower and Gulp are installed using npm. We install them globally to be able to use their commands from any directory: 
+        +code('bash', 'Bower and Gulp installation commands', 4).
+          sudo npm install -g bower
+          sudo npm install -g gulp
+      li 
+        span.bold 4. Setup the application dependencies: 
+        | Inside the #[tag master] directory, running the following commands will install all the needed dependencies for the application to work. The list of dependencies is read from the file #[tag package.json] for npm and #[tag bower.json] for Bower. 
+        +code('bash', 'Dependencies installation commands', 4).
+          sudo npm install
+          bower install
+    h2 Building and running the application
+    p The application source code is built using Gulp to produces HTML, CSS and javascript files and store them into the #[tag app] folder. Gulp also runs a local server into this folder so that the developer can see the resulting application in the browser. After the build process, Gulp watchs all sources files. When a source file is changed and saved, Gulp re-compile this file and refresh the application page on the browser. This way, the developer can change the source code and see the result immediately in the browser.
+  page
+    h3 The gulpfile
+    p The file #[tag gulpfile.js] contains the declaration of Gulp tasks. Declaring a task in this file can be done as follows:
+    +code('javascript', 'Gulp task declaration example').
+      var gulp = require('gulp'); // requiring the gulp module
+      gulp.task('copy', function(){
+        gulp.src('folder1/*')
+          .pipe(gulp.dest('folder2'));
+      });
+    p In the code above, we created a task called #[tag copy] to copy all files under the  #[tag folder1] into #[tag folder2]. To run this task from the command-line, we type:
+    pre: code.language-bash gulp copy
+
+    h3 Gulp tasks 
+    p In our application, the main Gulp tasks are the following:
+    ul
+      li 
+        .bold scripts:vendor
+        | This task runs two sub tasks #[span.bold scripts:vendor:base] and #[span.bold scripts:vendor:app]. The first one minifies and concatenates all the base vendor files (read from #[tag master/vendor.base.json]) into the file #[tag app/js/base.js]. The second one reads the list of additional vendor files from #[tag master/vendor.json] and copies them into the folder #[tag vendor].
+      li 
+        .bold scripts:app 
+        | This task minifies and concatenates all the core application javascript files into #[tag app/js/app.js].
+      li 
+        .bold styles:app, styles:themes and bootstrap
+        | Those are stylings tasks. The #[span.bold bootstrap] task compiles the Less source code of the bootstrap library. The two other tasks compile the core application Less files. The resulting CSS files are stored into #[tag app/css].
+      li 
+        .bold templates:app, templates:views and templates:pages 
+        | Those tasks compile the Jade source files of the index, views and pages respectively and store the resulting HTML files into #[tag app], #[tag app/views] and #[tag app/pages] respectively.
+  page
+    ul
+      li 
+        .bold modules:scripts 
+        | This task concatenates all the javascript files of each module and stores them under #[tag app/modules/module_name/all.js]
+      li 
+        .bold modules:styles 
+        | This task compiles the less file of each module and stores the result into #[tag app/modules/module_name/style.css]
+      li 
+        .bold modules:views 
+        | This task compiles all jade files under the views directory of each module and stores the resulting HTML files into #[tag app/modules/module_name/views]
+      li 
+        .bold watch
+        | This task watches all source files for changes and runs the corresponding task when a file is modified.
+      li 
+        .bold connect
+        | This task runs a local webserver into the app directory to see the results in the browser.
+      li 
+        .bold start
+        | This task compiles the application without vendors ( by running the other tasks ) and starts the server by running the #[tag connect] task.
+      li 
+        .bold default
+        | This task compiles the application and vendors and starts the server by running the #[tag connect] task. This task is run automatically when we execute the command "gulp" in the master directory.
+    
+    h2 Basics of AngularJS
+    p AngularJS is a very powerful framework for client-side applications. In this section, I will try to cover the minimum required basics in order to understand how the frontend application is built and be able to add new modules to it.
+  page
+    h3 Starting example
+    p A very simple example of using AngularJS could be the following:
+    +code('markup', 'Starter example of using AngularJS').
+      &lt;!doctype html>
+      &lt;html>
+      &lt;head>
+        &lt;meta charset="utf-8">
+        &lt;title> Angular Sample &lt;/title>
+      &lt;/head>
+      &lt;body data-ng-app="demo">
+        &lt;p> Your name : &lt;input type="text" ng-model="name">&lt;/p>
+        &lt;p> Hello {{ name }} &lt;/p>
+
+        &lt;script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js">
+        &lt;/script>
+        &lt;script>
+          var app = angular.module('demo', []);
+        &lt;/script>
+      &lt;/body>
+      &lt;/html>
+    p In the code above, we included the AngularJS javascript file from Google and we defined a new angular module called "demo". Please note that we put the scripts at the end of the body element to speed up the page loading. The attribute #[tag data-ng-app] of the body element tells AngularJs which angular module to be applied to the page.
+    p We defined a text input and set the attribute #[tag ng-model] to "name". This will define a variable called "name" and bind it's value with the content of the input. So if we type some text in this input, the value of the variable name will be set to this text. Finally we show the value of the variable name using the syntax #[tag(ng-non-bindable) {{name}} ]. This example shows the data binding feature of AngularJS, so by changing the value of the input, the text in the next paragraph is changed too.
+    p In the following, you find short definitions and examples of the most important AngularJS terms.
+  page
+    h3 Angular Module
+    p A module is a reusable collection of the application parts ( controllers, services, directives, ...). An application can use one or multiple modules. When declaring a module, we can specify the list of dependent module that this module will use. The parts of the related modules could be injected by AngularJS automatically and used.
+    p: .bold Example
+    +code('javascript', 'AngularJS module declaration example').
+      // declaration of new angular module
+      var app = angular.module('myApp', ['module1', 'module2']);
+    p Here we declared a module called "myApp" which depends on "module1" and "module2".
+    h3 Controller and Scope
+    p A controller is a javascript function that handles a view or a part of the page. It can bind variables and events to this part of the page. The variables binded to a view are holded into an object called the scope. This object can be injected automatically into the controller simply by adding #[tag $scope] to the function arguments.
+    p: .bold Example
+    +code('javascript', 'AngularJS Controller example').
+      // using the app variable which is the module
+      app.controller('HomeController', function($scope){
+        // use the scope to define binded variables
+        // A name variable for example
+        $scope.name = 'LHCbPR';
+        // or an array
+        $scope.tools = ['AngularJS', 'Bower', 'Gulp'];
+      });
+    p The code above will not work after minification. A recommanded way is to declare dependencies into a list of strings and add them to the function arguments in the same order like this:
+  page
+    pre: code.language-javascript.
+      app.controller('HomeController', ['$scope', function($scope) {
+        // ...
+      }]);
+    p To use the controller in the view, we first declare it using #[tag ng-controller] then use the variables and methods of the scope inside this view like the following:
+    +code('markup', 'Using Angular Controller in the view').
+      &lt;div ng-controller="HomeController">
+        &lt;p> The {{name}} web application is built using: &lt;/p>
+        &lt;ul>
+          &lt;li ng-repeat="element in tools"> {{ element }} &lt;/li>
+        &lt;/ul>
+      &lt;/div>
+    p The attribute #[tag ng-repeat] we added to the #[tag &lt;li>] element is a predefined angular directive which loops over a array and repeat the element for each item of the array. The resulting view will be something like:
+    +image('view-sample-1.png', 'Sample View')
+  page
+    h3 Directives
+    p A directive is a new element or behavior added to the HTML. #[tag ng-controller] and #[tag ng-repeat] are examples of directives which are used as attributes. When defining a directive we specify wether it will be used as an element (an HTML tag), an attribute or a class. This choice depends on the feature added by the directive:
+    ul
+      li A directive which is replaced by a template or view is more likely to be used as an element. 
+      li A directive which adds a behavior to HTML elements based on an input is more likely to be used as an attribute.
+      li A directive which adds a generic decoration or behavior to HTML elements is more likely to be used as a class.
+    p These rules remain subjective as AngularJS enables the developer to give multiple uses to the same directive ( a directive that can be used as an element and as an attribute for example).
+    p For example, let us define a directive that takes a collection of objects and shows them as an HTML table. First we will define the template as follows (note that we are using some predefined CSS classes):
+    +code('markup', 'Data table sample directive template').
+      &lt;table class="table table-striped table-bordered">
+        &lt;thead>
+          &lt;tr>
+            &lt;!-- We assume that the list of titles will be declared -->
+            &lt;th ng-repeat="title in titles"> {{ title }} &lt;/th>
+          &lt;/tr>
+        &lt;/thead>
+        &lt;tbody>
+          &lt;!-- We assume that data is the collection of objects -->
+          &lt;tr ng-repeat="item in data">
+            &lt;td ng-repeat="title in titles"> {{ item[title] }} &lt;/td>
+          &lt;/tr>
+        &lt;/tbody>
+      &lt;/table>
+  page
+    p Then we define the directive as follows:
+    +code('javascript', 'Data table sample directive code').
+      app.directive('myTable', function(){
+        // The directive consists on an object that this function should return
+        return {
+          restrict: 'E', // define how the directive will be used
+          // 'E' for element, 'A' for attribute and 'C' for class
+          // 'EA' means element or attribute 
+          templateUrl: 'data-table.html', // the template file
+          // if specified, the content of the HTML element to which the directive
+          // is applied will be overitten by this template
+          scope: { // contains the data passed to the directive as attributes
+            data: '='
+          },
+          // This function is executed when the directive is rendered
+          link: function(scope){
+            // scope.data will refer the data passed to the directive
+            // Defining titles of the table as the properties of the first
+            // object in data, as we assume all objects have the same properties
+            scope.titles = [];
+            if(scope.data != undefined && scope.data.length > 0){
+              for(attr in scope.data[0]){
+                scope.titles.push(attr);
+              }
+            }
+          }
+        };
+      });
+    p Now assuming that we have a collection of objects in the scope like this:
+    pre: code.language-javascript.
+      $scope.collection = [
+        { Experiment: 'CMS', 'LHC experiment ?': 'Yes', Type: 'General' },
+        { Experiment: 'ATLAS', 'LHC experiment ?': 'Yes', Type: 'General' },
+        { Experiment: 'LHCb', 'LHC experiment ?': 'Yes', Type: 'Specific' },
+        { Experiment: 'ALICE', 'LHC experiment ?': 'Yes', Type: 'Specific' }
+      ];
+  page
+    p We can use the directive in the view (the HTML code) as follows:
+    pre: code.language-markup.
+      &lt;my-table data="collection">&lt;/my-table>
+    p The result is a table of the given data:
+    +image('my-table.png', 'Data table sample directive result')
+
+    h3 Services
+    p A service is an object which is instanciated once (Signleton) and injected into components using it (like controllers and directives). Service is a good way to share functionalities between different components of the application.
+    p AngularJS provides several predefined services like #[tag $http] which handles AJAX requests. To use this service inside a controller for example, all we have to do is to add it to the arguments:
+    +code('javascript', 'Example of injecting $http service').
+      app.controller('MyController', ['$scope', '$http', function($scope, $http){
+        // Now $http can be used here
+      }]);
+    p In our application, we are using a service called #[span.bold Restangular]. It is built on top of #[tag $http] and simplifies the communication with a REST API.
+
+    h2 Frontend core application features
+    h3 Routes and Lazy loading
     h3 LHCbPR service
-    h3 Separating modules
-    p See the modules development guide appendix for the modules development documentation.
-    h3 Custom directives
-    h4 Search Jobs
-    h4 Select Jobs
-    h3 Responsive Charts and DataTables
-    h3 Loading Icon
+    h3 Directives
+    h4 DataTables and be-responsive
+    h4 Charts
+    h4 Search and Select Jobs
+
   page
-    h1 Analysis Modules
-    h2 Jobs Module
-    h2 Trends Module
-    h2 Histograms Module
+    h1 Application Modules Development
+    h2 Helper classes
+    h3 Module class
+    h3 Dependencies class
+    h3 Colors class
+
+    h2 Adding a module
+    p From the guide
+
+    h2 Analysis Modules Done
+    h3 Jobs Module
+    h3 Trends Module
+    h3 Histograms Module
+
+
   page
     h1.no-number Conclusion
+    p My final internship at CERN is the best job experience I had till now. During this period, I discovered new cultures by meeting people from different countries, I worked within a group in a new flexible way and I learned new web development technologies.
+    p This internship was part of my third year studies at ISIMA. I worked as a software engenieer to develop and improve the LHCbPR (LCHb Performance and Regression) application. The applications used to analyse data collected by the detector on LHCb are tested using configurable test jobs. The main goal of LHCbPR is to provide physicists and developers with a framework in which they can easily do analysis of test jobs results. We started the development of the second version of this application from scratch and used flexible architecture and recent technologies. This version contains three layers: A database, a REST API and a frentend web application. My task was mainly to develop the frontend application and the analysis modules using AngularJS and new web development tools. But I did also some changes in the backend which was built using Django REST framework (written with Python programming language).
+    p I started the application based on a template containing AngularJS and other libraries. After understanding the structure of the template I started customizing it to fit our needs. Modifications have been done on the files structure, the build system and the javascript code. The next step was to create some analysis modules and to add new helper classes which simplify this process. Finally I have written a development guide for users explaining how to add new analysis modules to the application.
+    p The first version of the frontend application was done with three analysis modules. Other analysis modules should be added to have to same functionalities as the old version. One perspective was to simplify adding module for persons with no AngularJS knowledge by giving an easy to use group of functions hiding the complexity of this framework. This simplification layer could be made in a generic way giving the possibility to use it to build other modular web applications.
