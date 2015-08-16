@@ -1,5 +1,5 @@
-ul
+ul.sommaire
   li(ng-repeat="c in getFigures() track by $index")
-    | {{ c.name }}
     .pull-right {{ c.page }}
+    span {{ c.name }}
     .clear

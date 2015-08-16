@@ -137,23 +137,23 @@ section.without-header
       li
         span.bold Application: 
         | represents a software used by LHCb to process or analyse data. it is described by a name and has many versions
-      li
-        span.bold Application Version: 
-        | a version belongs to an application. It can be a release or a nightly build (intermediate version compiled every night).
   page
     +image('ers.png', 'Database Entity Relation Schema')
     ul
+      li
+        span.bold Application Version: 
+        | a version belongs to an application. It can be a release or a nightly build (intermediate version compiled every night).
       li
         span.bold Job Description: 
         | This entity describes all that is needed to define a job. In particular, it specifies the application version, the project setup, the running option, the plateforms in which jobs will be executed and the handlers that will collect results.
       li
         span.bold Handler: 
         | a handler has a name and a description. It gethers data after the job has been run. It is linked to multiple job descriptions via the "job handler" pivot table. It is also linked to many jobs via the "handler result" pivot table.
+  page
+    ul
       li
         span.bold Option: 
         | describes the command-line options to pass when running the jobs. I has a many to many relation with the attribute entity.
-  page
-    ul
       li
         span.bold Attribute: 
         | an attribute can belong to multiple attribute groups. It also has a many to many relation with the job entity via the jobresult. Job results can have different types (integer, float, file, string). 
@@ -421,7 +421,7 @@ section.without-header
       var app = angular.module('myApp', ['module1', 'module2']);
     p Here we declared a module called "myApp" which depends on "module1" and "module2".
     h3 Controller and Scope
-    p A controller is a javascript function that handles a view or a part of the page. It can bind variables and events to this part of the page. The variables binded to a view are holded into an object called the scope. This object can be injected automatically into the controller simply by adding #[tag $scope] to the function arguments.
+    p A controller is a javascript function that handles a view or a part of the page. It can bind variables and events to this part of the page. The variables binded to a view are held into an object called the scope. This object can be injected automatically into the controller simply by adding #[tag $scope] to the function arguments.
     p: .bold Example
     +code('javascript', 'AngularJS Controller example').
       // using the app variable which is the module
@@ -525,30 +525,600 @@ section.without-header
       }]);
     p In our application, we are using a service called #[span.bold Restangular]. It is built on top of #[tag $http] and simplifies the communication with a REST API.
 
+    h3 Routing
+    p the routing functionality in AngularJS helps to create single-page web applications. The #[tag $routeProvider] contained in the #[tag ngRoute] module is used to configure routes of the application. A route definition consists on the definition of an URL pattern with the corresponding view and controller. Routes are configured using the #[tag config()] method as follows:
+  page
+    +code('javascript', 'Routes configuration example').
+      // The module depends on the ngRoute module 
+      // because we need to use $routeProvider
+      var app = angular.module('demo', ['ngRoute']);
+      // Routes configuration
+      app.config(['$routeProvider', function($routeProvider) {
+        $routeProvider
+          .when('/home', {
+            templateUrl: 'home.html',
+            controller: 'HomeController'
+            }
+          })
+          .when('/experiments/:name', {
+            templateUrl: 'experiment.html',
+            controller: 'ExperimentController'
+            }
+          })
+          .otherwise('/home');
+      }]);
+    p Here we defined two routes. The first route for the home page. The second route for the experiment page. Note that the URL pattern of the second route contains a parameter called #[tag :name] which will be matched as an alpha-numeric string. A parameter in the URL pattern always starts with ":" and its value can be retrieved using the #[tag $routeParams] service. The default URL to apply when no pattern is matched is defined with the #[tag otherwise()] method. In the previous code, if no pattern is matched, the user will be redirected to the home page.
+    p In addition to #[tag home.html] and #[tag experiment.html] mentioned in the route definitions, we need to create #[tag index.html] which is the single page to be loaded directly by the browser. Inside this page, we use the #[tag ng-view] directive to insert the view corresponding to the URL pattern.
+    p Assuming that the link of our application is "http://demo.com/", when this link is visited, the browser will load the #[tag index.html] file and then load all javascript and CSS files referenced inside it. The browser will then run the javascript code. In particular, the routes will be defined and angular will match the URL and find the current route. The URL of the route is the part of link after the first "#" character. This character is used because the browser does not reload the page when the string after "#" is changed; which enables Angular to handle this part of the link and load views via AJAX. 
+  page
+    p When the link does not contain any "#", the route URL is supposed empty. In this case, Angular will redirect us to the home page by appending "#/home" to the link and loading #[tag home.html] inside the #[tag ng-view] directive. In the same way, visiting "http://demo.com/#/ experiment/LHCb" will load the #[tag experiment.html] and the value of the parameter name inside the #[tag ExperimentController] will be "LHCb".
+
     h2 Frontend core application features
-    h3 Routes and Lazy loading
+    p Many AngularJS modules are used in our frontend application to provide module developers with useful functionalities. The most important functionalities and their use case are presented below.
+    h3 States and Lazy loading
+    p Our application contains many analysis modules. To map URLs to modules we are using #[span.bold states]. States are like routes with the ability to be nested. This way a module of the application is described by a state and can have sub states. The states feature is offered by #[span.bold AngularUI Router] which is an AngularJS module providing #[tag $state] service and #[tag $stateProvider] to handle states.
+    p When declaring a state, in addition to the view and the controller, a list of dependencies can be provided. These dependencies will be loaded with the state. A dependency is a name referencing a collection of javascript and CSS files. The file #[tag vendor.json] contains the starting list of dependencies. The process of loading these files only when needed is called #[tag Lazy loading] which makes the application faster. The application analysis modules are added automatically to the list of dependencies so that one module can depend on an other.
+    p The code to define states will be presented in the next section.
     h3 LHCbPR service
+    p All analysis modules need to communicate with the REST API to retrieve data from the database and present it. The frontend application contains the #[tag lhcbprResources] service which extends the Restangular service and simplifies sending and requesting data from the REST webservice. Here is an example retreiving the list of active applications:
+  page
+    +code('javascript', 'Example of requesting data from the REST API').
+      app.controller('TestController', [
+      '$scope','lhcbprResources',function($scope,lhcbprResources) 
+      {
+          // Get the list of active applications
+          lhcbprResources.all('active/applications')
+              .getList()
+              .then(function(response){
+                  // Do what ever you want with the response
+                  // This will show the list on the console
+                  console.log(response);
+              });
+
+              // Some other code here
+              // Please note that the AJAX calls are asynchronious 
+              // which means that the code here maybe executed while 
+              // waiting for the response
+      }]);
     h3 Directives
-    h4 DataTables and be-responsive
+    p The core application contains a collection of predefined directives that can be used in the analysis modules development. The most important directives are presented in the following.
+    h4 DataTables
+    p the #[tag ngTable] directive can be used to insert a table of data with sorting, filtering and pagination features. For example, to insert a table of jobs, we add the following code in the view (note that this is Jade source code; all analysis modules views are written using Jade which is less verbose then HTML):
+  page
+    +code('jade', 'Example of ngTable directive: the view code').
+      table.table.table-striped.table-bordered.table-hover.be-responsive(
+        ng-table="tableParams")
+      thead: tr
+        th ID
+        th Name
+      tbody
+        tr(ng-repeat="attr in $data")
+          td {{attr.id}}
+          td {{attr.name}}
+    p Then we add the following code in the controller:
+    +code('javascript', 'Example of ngTable directive: the controller code').
+      App.controller('TestController', [
+        '$scope', 'ngTableParams', function($scope, ngTableParams) 
+      {
+        // We define some hard coded data
+        $scope.attrs = [
+          { id: 5, name: "EVENT_LOOP" },
+          { id: 6, name: "EVENT_LOOP_count" },
+          { id: 7, name: "EVENT_LOOP_rank" }
+        ];
+
+        // Table parameters
+        $scope.tableParams = new ngTableParams(
+          { page: 1, count: 10 }, 
+          { total: 0, getData: function($defer, params) {
+              // We just show the hard coded values
+              $defer.resolve($scope.attrs);
+          }});
+
+        // Add this line to fix a bug in the ng-table directive
+        $scope.tableParams.settings().$scope = $scope;
+      }]);
+  page
+    p The result is something like this:
+    +image('jobs-data-table.png', 'Example of Data Table')
+
     h4 Charts
-    h4 Search and Select Jobs
+    p Many charts directives are included and can be used in the analysis modules. These chart directives are based on five javascript libraries. The library that was used in developing charts on the analysis modules is #[span.bold ChartJS] which is flexible and provides many types of charts. Exemples of charts provided by this library are the following:
+    +image('charts-samples.png', 'Examples of predefined chart directives')
+  page
+    h4 Search Jobs
+    p This is the most used directive in analysis modules. It shows a form in which the user can filter jobs by application, options and versions. And notifies the controller each time the selection changes.
+    p To insert the directive in the view, we use the Jade code below:
+    +code('jade', 'Example of using search-jobs directive: the view code').
+      search-jobs(on-found="updateJobs(searchParams)")
+
+    p And then we define the callback function in the controller as follows:
+    +code('javascript', 'Example of using search-jobs directive: the controller code').
+      $scope.updateJobs = function(params){
+          // You can use the selected parameters:
+          // params.apps[0]: the selected application id
+          // params.options: array of selected options ids
+          // params.versions: array of selected versions ids
+      };
+    p This directive binds selected parameters to the URL on every change which means that visiting the generated URL will selected these parameters automatically.
 
   page
     h1 Application Modules Development
+    p The frontend interface contains three main parts:
+    ul
+      li A header containing the logo and loading icon displayed when data is being loaded from the API.
+      li A sidebar containing the list of analysis modules.
+      li A content area showing the selected module.
+    h2 Files structure
+    p All modules are stored under the #[tag master/modules] directory. Each module have the following files structure:
+    +code('bash', 'Module files structure').
+      module_name/
+          |-- js/               # the javascript files
+          |   |-- controllers/  # controllers
+          |   |-- directives/   # custom directives
+          |   |-- init.js       # initialization file
+          |-- less/
+          |     |-- style.less  # custom styles
+          |-- views/            # views
+    ul
+      li
+        tag js/init.js 
+        | contains the definition of the module. Here we describe what are the states of module and what are links to add on the sidebar.
+      li
+        tag js/controllers/
+        | This directory contains the controllers of the module. Each controller is written on it's own javascript file.
+      li
+        tag js/directives/
+        | This directory contains additional directives defined for this analysis module. This directory is optional. Other directories like services or filters could be added to contain custom components used within the module.
+      li 
+        tag less/style.less
+        | This file contains custom styles code for the module elements.
+      li 
+        tag views/ 
+        | This directory contains the views of the module. Each view is defined by a Jade file.
+  page
     h2 Helper classes
+    p In order to make the modules development process more simple. I added some helper classes to hide a part of the Angular complexity.
     h3 Module class
+    p The module class simplifies the declaration of new modules. It offers the following methods:
+    
+    p.bold Module.create(name, title, position, settings)
+    ul 
+      li
+        tag name 
+        | The name of the module, it should be unique for each module.
+      li
+        tag title 
+        | The title of the module menu in the sidebar.
+      li
+        tag position 
+        | The position of the module menu in the sidebar. If two modules have the same position, there are shown one under the other.
+      li
+        tag settings 
+        | An optional plain object specifying the folder name of the module.
+    pre: code.language-javascript.
+      Module.create('name', 'Title', 1, { 
+          folder: 'my_folder_name' 
+      });
+    p If no settings is provided; the folder name is assumed to be the same as the module name.
+    p This method returns an instance of the #[span.bold Module] class.
+
+    p.bold addMenuItems(items)
+    ul: li
+      tag items 
+      | Menu object or array of menu objects. A menu object has the following format:
+      pre: code.language-javascript.
+        {
+            text: "Title", // Text to show on the sidebar
+            sref: "app.state.name", // Target state name prefixed by 'app.'
+            icon: "icon-grid", // Icon of the menu item
+            alert: "new" // Added a budge to the menu item
+        }
+    p This method returns the same calling Module instance so that we can chain calls to other methods.
+  page
+    p.bold addStates(states)
+    ul: li
+      tag states 
+      | State object or array of state objects. A state object has the following format:
+      pre: code.language-javascript.
+        {
+            name: 'test.state_one', // Required
+            url: '/my-url', // If not provided,it will be defined
+            // based on the name ('/state-one' for this example)
+            title: 'Title', // If not provided,it will be defined
+            // based on the name ('State One' for this example)
+            templateUrl: 'view.html', // name of the view file 
+            // with html extension instead of jade. If not provided 
+            // the view name will be 'state-one.html' in this case.
+            controller: 'MyController', // name of the controller 
+            // handeling the state. If not provided, it will be 
+            // 'TestStateOneController' for this case.
+            resolve: ['test', 'chartjs'] // names of dependencies
+            // on which this state depends. The name of its own
+            // module should be part of the dependencies.
+        }
+
+    p This method returns the same calling Module instance so that we can chain calls to other methods.
+
+    p.bold start()
+    p This method should be called once all the desired menu items and states were added to the module. It executes the corresponding code on the AngularJS instance and integrate the module with the rest of the application.
+
     h3 Dependencies class
+    p This class is named #[tag Deps] and it handles the list of dependencies which are loaded with modules on request. The Module class uses this one to know which files to load for each dependency name. The main methods of this class are:
+    p.bold Deps.addLibraries(items), Desps.addAngularModules(items) and Deps.addModules(items)
+    p These methods are used to add dependencies. The #[tag items] arguments in a dependency or a list of dependencies. A dependency has the following structure:
+  page
+    pre: code.language-javascript.
+      {
+        name: "The dependency name",
+        files: [
+          "my-dependency.css",
+          "my-dependency.js"
+        ]
+      }
+    p.bold Deps.get(name)
+    p This method gets the list of files of a module based on the name. If no module with the given name is found, the method returns #[tag null].  
+    
     h3 Colors class
+    p This class makes it simple to request colors and use them to draw charts without having to write the HEX or RGB code of colors. It also gives the possibility to make a color darker or lighter by a percentage. Its main methods are:
+    p
+      span.bold Colors.add(name, hex)
+      | : add a color with the specifique name and HEX code.
+    p
+      span.bold Colors.get(name [, percentage])
+      | : gets the hex code of the color. A percentage can optionaly be applied on the color. I the percentage < 1 the color becomes darker; else it becomes lighter.
+    p
+      span.bold Colors.lighten(hex [, percentage])
+      | : make a color lighter based on a percentage. The percentage is 0.25 by default.
+    p
+      span.bold Colors.darken(hex [, percentage])
+      | : make a color darker based on a percentage. The percentage is 0.25 by default.
 
-    h2 Adding a module
-    p From the guide
+    h2 Step by step example: the Trends analysis module
+    p In this part I will explain how the Trends analysis modules (one of the modules I created for the frontend application) was made step by step.
+    h3 Use Cases
+    p The first step is to define the features or use cases of our module. The use cases for the Trends module are the following:
+    ul
+     li User should select an application and possibly multiple options and versions.
+     li On every change of the selection; We have to retrieve all the job results of jobs from the selected application, options and version. Then a table should show the list of attributes found on these results.
+     li User should be able to filter attributes by name.
+  page
+    ul
+     li User should be able to show the Trends plot (showing the mean and deviation by version) of any attribute by clicking on the corresponding button.
+     li If a plot is shown and the user copied the link. Visiting that link again should re-produce the plot with the same selected application, options and version for the same attribute.
+    h3 Files structure
+    p This module will have only one state, so one view and one controller; the files structure can be like this:
+    +code('bash', 'Trends analysis module files structure').
+      master
+          |-- modules
+              |-- demo/
+                  |-- js/
+                  |   |-- controllers/
+                  |         |-- demo.js
+                  |   |-- init.js
+                  |-- less/
+                  |     |-- style.less
+                  |-- views/
+                        |-- demo.jade
+    h3 Module declaration
+    p The module declaration is written on the file #[tag js/init.js]:
+    pre: code.language-javascript.
+      Module.create('demo', 'Demo', 2)
+        .addMenuItems({
+          text: "Demo",
+          sref: "app.demo",
+          icon: "icon-grid"
+        })
+        .addState({
+          name: 'demo',
+          resolve: ['demo', 'chartjs', 'ngTable', 'ngDialog']
+        })
+        .start();
+  page
+    p According to the previous code, we are creating a module named demo having one menu item pointing to the #[tag app.demo] state. The only state of the module is named demo. Note that the menu item is pointing to #[tag app.demo] while the state's name is just demo. That's fine because the Module class prefixes all state names with "app.". This module depends on:
+    ul
+      li 
+        span.bold chartjs: 
+        | used to draw plots
+      li 
+        span.bold ngTable: 
+        | used to show the attributes table
+      li 
+        span.bold ngDialog: 
+        | used to create the popup showing the plot.
+    h3 Adding Search Form
+    p Now let's write this code on the view to show the search form:
+    pre: code.language-jade.
+      h3 Trends
+        small.text-muted Attributes values by version
+      .row.traditional(ng-class="csspinner")
+        .col-lg-4
+          search-jobs(on-found="requestStatistics(searchParams)")
+        .col-lg-8
+          p The attributes table will be added here !
+    p As you see, we have told the #[tag search-jobs] directive to call the function #[tag requestStatistics()] on every change; So we have to define this function in the controller. So for the moment the controller's code will be like this:
+    pre: code.language-javascript.
+      App.controller('DemoController', ['$scope', function($scope) {
+          $scope.appId = undefined;
+          $scope.options = undefined;
+          $scope.versions = undefined;
 
-    h2 Analysis Modules Done
-    h3 Jobs Module
-    h3 Trends Module
-    h3 Histograms Module
+          $scope.requestStatistics = function(params) {
+              $scope.appId = params.apps[0];
+              $scope.options = params.options;
+              $scope.versions = params.versions;
+          };
+      }]);
+    p On every change, we are saving the selected parameters in the variables $scope.appId, $scope.options and $scope.versions.
+  page
+    h3 Showing Attributes on a table
+    p Let's add the attributes table to our view; the code will become like this:
+    pre: code.language-jade.
+      h3 Trends
+        small.text-muted Attributes values by version
+      .row.traditional(ng-class="csspinner")
+        .col-lg-4
+          search-jobs(on-found="requestStatistics(searchParams)")
+        .col-lg-8
+          table.table.table-striped.table-bordered.table-hover.be-responsive(ng-table="attrsTableParams")
+            thead
+              th ID
+              th Name
+              th 
+            tbody
+              tr(ng-repeat="a in $data")
+                td {{a.id}}
+                td {{a.name}}
+                td
+                  button.btn.btn-primary(ng-click="showChart(a)") Show
+    p We applied the #[tag ng-table] directive to our table using #[tag attrsTableParams] variable which will be defined in the controller. Each row of the table shows the id of the attribute, its name and a button to show its corresponding plot. Note that we pass the attribute to the function #[tag showChart(a)] when the button is clicked using the #[tag ng-click] directive.
+    p Now let's add the variable #[tag attrsTableParams] and the function #[tag showChart] to the controller. First of all, we need to inject the #[tag ngTableParams] and #[tag lhcbprResources] services into our controller to be able to use them; we do this by Adding them to controller parameters like this:
+    pre: code.language-javascript.
+      App.controller('DemoController', ['$scope', 'ngTableParams', 'lhcbprResources', 
+        function($scope, $tableParams, $api) {
+    p Note that we add the #[tag ngTableParams] and #[tag lhcbprResources] to the array and to the function arguments. The order of arguments should be the same as in the array. So here the argument #[tag $scope] is referencing the #[tag $scope] service, #[tag $tableParams] is referencing the #[tag ngTableParams] and #[tag $api] is referencing #[tag lhcbprResources].
+  page
+    p Now we can use #[tag $tableParams] to define #[tag attrsTableParams] like this:
+    pre: code.language-javascript.
+      $scope.attrsTableParams = new $tableParams(
+          {
+              page: 1, // the page to show initialy
+              count: 10 // number of rows on each page
+          }, 
+          { 
+              total: 0, // total number of rows initialy
+              // function that fetchs data to fill the table
+              getData: function($defer, params) {
+                  // We check if an application and options were selected
+                  if($scope.appId && $scope.options){
+                      // We construct the data to send with the request to the API
+                      var requestParams = {
+                          app: $scope.appId,
+                          options: $scope.options,
+                          versions: $scope.versions,
+                          page: params.page(),
+                          page_size: params.count()
+                      };
+                      // TODO: The filter code will be added here
+                      // We send the request to the '/trends' url of the API
+                      $api.all('trends')
+                          .getList(requestParams)
+                          .then(function(trends){ // When we receive the response
+                          // We set the total number of rows
+                          if(trends._resultmeta){
+                              params.total(trends._resultmeta.count);
+                          }
+                          // We fill the table with the response
+                          $defer.resolve(trends);
+                          // TODO: the code to show the plot based on the URL will be added here
+                      });
+                  }
+              }
+          }
+      );
+      // We add this line of code to fix a bug in the ngTable service
+      $scope.attrsTableParams.settings().$scope = $scope;
+  page
+    p After this, we need a function which updates the table's content after every change of the selected application, options or versions.
+    pre: code.language-javascript.
+      $scope.update = function(){
+          // Set the current page of the table to the first page
+          $scope.attrsTableParams.page(1);
+          // reloading data
+          $scope.attrsTableParams.reload();
+      }
+    p Now we go back to the function #[tag requestStatistics] and call the function #[tag update] after every change:
+    pre: code.language-javascript.
+      $scope.requestStatistics = function(params) {
+          $scope.appId = params.apps[0];
+          $scope.options = params.options;
+          $scope.versions = params.versions;
+          $scope.update();
+      };
+    p Finally let's add the #[tag showChart] function:
+    pre: code.language-javascript.
+      $scope.showChart = function(a){
+          console.log('Showing chart of ' + a.name);
+      };
+    p This function just prints the message "Showing chart of [attribute name]" on the console for the moment. We will add the Chart code below.
+    h3 Filtering attributes by name
+    p Now let's add a text input to filter attributes by name. We start by adding a form containing one input before the table on the view; the code of the view becomes as follows:
+  page
+    pre: code.language-jade.
+      h3 Trends
+        small.text-muted Attributes values by version
+      .row.traditional(ng-class="csspinner")
+        .col-lg-4
+          search-jobs(on-found="requestStatistics(searchParams)")
+        .col-lg-8
+          form
+            .form-group
+              label Filter Attributes
+              input.form-control(ng-model='attrFilter', ng-change='update()', type='text')
+          table.table.table-striped.table-bordered.table-hover.be-responsive(ng-table="attrsTtableParams")
+            thead
+              th ID
+              th Name
+              th 
+            tbody
+              tr(ng-repeat="a in $data")
+                td {{a.id}}
+                td {{a.name}}
+                td
+                  button.btn.btn-primary(ng-click="showChart(a)") Show
+    p Please note that in this line:
+    pre: code.language-jade.
+      input.form-control(ng-model='attrFilter', ng-change='update()', type='text')
+    p We bind the value of the input to the scope variable named #[tag attrFilter] and we call #[tag update()] on every change.
+    p Let's go to the controller and replace this comment on the #[tag getData] function:
+    pre: code.language-javascript.
+      // TODO: The filter code will be added here
+    p With this piece of code:
+    pre: code.language-jade.
+      // remove additional spaces from the input value
+      $scope.attrFilter = $scope.attrFilter.trim();
+      // if the value is not empty; we add it to the request parameters
+      if($scope.attrFilter && $scope.attrFilter != '')
+          requestParams.attr_filter = $scope.attrFilter;
+  page
+    h3 Showing the Chart
+    p Till now, when we click the "Show" button to show the chart; nothing happens. Let's fix this.
+    p The plot will be shown into a ngDialog (which is a popup). So we have to define the content of this popup. One of the simple way to do it is to include it in the view as an inline template by adding this code at the end of the view code:
+    pre: code.language-jade.
+      script(type="text/ng-template", id="chartTemplate")
+        .row
+          .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sx-10.col-sx-offset-1
+            h2 {{name}}
+            .chart
+              canvas(linechart='', options='lineOptions', data='lineData', height='chartHeight()', width='chartWidth()')
+    p In this code, we defined an inline template with the name "chartTemplate". The plot will be shown into the canvas element because we applied the directive linechart to it. This directive needs two properties options and data which we filled with the scope variables #[tag lineOptions] and #[tag lineData]; We will define these variables in the controller. We have also specified the width and height of the chart using the scope functions chartWidth and chartHeight that will be defined on the controller too.
+    p Now we move to the controller and add the following code:
+    pre: code.language-javascript.
+      $scope.lineOptions = {
+          animation: false,
+          errorDir : "both",
+          errorStrokeWidth : 3,
+          datasetFill : false,
+          scaleOverride : true,
+          scaleSteps : 10,
+          scaleStepWidth : 1,
+          scaleStartValue : 0,
+              tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %><%if (errorBar){%> ± <%=errorBar.errorVal%><%}%>",
+          legendTemplate : '<% for (var i=0; i<datasets.length; i++){%><span class="label label-default" style="background-color:<%=datasets[i].fillColor%>"><%if(datasets[i].label){%><%=datasets[i].label%><%}%></span> <%}%>'
+      };
+      $scope.chartHeight = function() {
+          return $(window).height() - 140;
+      };
+      $scope.chartWidth = function() {
+          return $(window).width() - 60;
+      };
+  page
+    p Then we write the code of the showChart function:
+    pre: code.language-javascript.
+      $scope.showChart = function(a){
+          console.log('Show chart of ' + a.name);
+          // We store versions, averages and deviations in separated tables
+          // with the same order and we compute the min and max values
+          var minValue = a.values[0].average - a.values[0].deviation, 
+              maxValue = a.values[0].average + a.values[0].deviation,
+              value = 0,
+              versions = [],
+              averages = [],
+              deviations = [];
+          a.values.forEach(function(v){
+              v.average = parseInt(100 * v.average) / 100.0;
+              v.deviation = parseInt(100 * v.deviation) / 100.0;
+              averages.push(v.average);
+              versions.push(v.version);
+              deviations.push(v.deviation);
+              value = v.average - v.deviation;
+              if(value < minValue)
+                  minValue = value;
+              value = v.average + v.deviation;
+              if(value > maxValue)
+                  maxValue = value;
+          });
+          minValue = Math.floor(minValue);
+          maxValue = Math.floor(maxValue) + 1;
+          // We configure the chart to show only values between minValue and maxValue
+          $scope.lineOptions.scaleStartValue = minValue;
+          $scope.lineOptions.scaleSteps = maxValue - minValue;
+          $scope.lineOptions.scaleStepWidth = 1;
+          while ( $scope.lineOptions.scaleSteps > 25 ){
+              $scope.lineOptions.scaleSteps /= 2;
+              $scope.lineOptions.scaleStepWidth *= 2;
+          }
+  page
+    pre: code.language-javascript.
+      // ...
+          // We set the data to show on the chart
+          $scope.lineData = {
+              labels: versions,
+              datasets: [{
+                  label: a.name,
+                  fillColor : "rgba(220,220,220,0.2)",
+                  strokeColor : "#2F49B1",
+                  pointColor : "#5E87D6",
+                  pointStrokeColor : "#fff",
+                  pointHighlightFill : "#fff",
+                  pointHighlightStroke : "#5E87D6",
+                  data: averages,
+                  error: deviations
+              }]
+          };
+          // We set the name of the attribute
+          $scope.name = a.name;
+          // We show the popup
+          $dialog.open({
+              template: 'chartTemplate',
+              className: 'chart-dialog',
+              scope: $scope
+          });
+      }
 
-
+    h3 Binding selected values to the URL
+    p When we show the chart, we need to add the id of the shown attribute to the URL, and when the popup is closed we just remove this information from the URL. To do this, we need the #[tag $location] service that we will inject into our controller:
+    pre: code.language-javascript.
+      App.controller('DemoController', ['$scope', 'ngTableParams', 'lhcbprResources', '$location', function($scope, $tableParams, $api, $location) {
+    p Then we change the last part of showChart function:
+  page
+    pre: code.language-javascript.
+      $scope.showChart = function(a){
+          // ... code here remains the same
+          // We show the popup
+          $dialog.open({
+              template: 'chartTemplate',
+              className: 'chart-dialog',
+              scope: $scope,
+              preCloseCallback: function() { // When the popup is closed
+                  $scope.$apply(function(){
+                      // We remove the attr from the URL
+                      $location.search('attr', null);
+                  });
+              }
+          });
+          // After showing the popup we set the attr on the URL
+          $location.search('attr', a.id);
+      }
+    p The last step is to check if the attr is set on the URL when the user first visits the page and if set show the chart directly. We will have to do this check after loading the data from the API. So we go back to the getData function of the $scope.attrsTableParams and we replace the comment:
+    pre: code.language-javascript.
+      // TODO: the code to show the plot based on the URL will be added here
+    p With the following code:
+    pre: code.language-javascript.
+      // Read the attribute id from the URL
+      var paramsAttr = $location.search().attr;
+      // if found
+      if(paramsAttr !== undefined){
+          // Search the corresponding attribute on the response
+          var a = undefined;
+          trends.forEach(function(t){
+              if(t.id == paramsAttr) a = t;
+          });
+          // If the corresponding attribute found
+          if(a !== undefined){ // Show the chart
+              $scope.showChart(a);
+          }
+      }
   page
     h1.no-number Conclusion
     p My final internship at CERN is the best job experience I had till now. During this period, I discovered new cultures by meeting people from different countries, I worked within a group in a new flexible way and I learned new web development technologies.

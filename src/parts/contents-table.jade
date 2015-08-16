@@ -1,5 +1,5 @@
-ul
+ul.sommaire
   li(ng-repeat="c in getContents() track by $index", class="level-{{c.level}}")
-    | {{ c.title }}
+    span {{ c.title }}
     .pull-right {{ c.page }}
     .clear

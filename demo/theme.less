@@ -31,7 +31,7 @@ page {
 	h1, h2, h3, h4, h5, h6 {
 		font-family: Lato;
 		font-weight: 400;
-		margin-top: 0.4cm;
+		margin: 0.4cm 0cm;
 	}
 	h1 { font-size: 20pt; color: @c1; }
 	h2 { font-size: 18pt; color: @c2; margin-left: 0.2cm; }
@@ -61,24 +61,38 @@ page {
   }
 
   ul li {
+    margin-top: 0.3cm;
     margin-left: 1cm;
-    margin-top: 0.1cm;
-    padding-left: 0.3cm;
-    padding-top: 0.3cm;
     line-height: 150%;
     text-align: justify;
 	}
+  ul.sommaire {
+    li  {
+      margin-top: 0.2cm;
+      margin-bottom: 0.6cm;
+      margin-left: 0cm;
+      border-bottom: 2px dotted #000;
+
+      div, span {
+        margin-bottom: -0.3cm;
+        display: cell-table;
+        width: auto;
+        background: #fff;
+        padding: 0cm 0.2cm;
+      }
+    }
+    li.level-1 {
+      font-weight: bold;
+    }
+    li.level-2 { margin-left: 0.7cm; }
+    li.level-3 { margin-left: 1cm; }
+    li.level-4 { margin-left: 1.3cm; }
+    li.level-5 { margin-left: 1.6cm; }
+    li.level-6 { margin-left: 2cm; }
+  }
 	ul li.with-border {
 		border-left: 2px solid @grey;
 	}
-  li.level-1 {
-    font-weight: bold;
-  }
-  li.level-2 { margin-left: 0.7cm; }
-  li.level-3 { margin-left: 1cm; }
-  li.level-4 { margin-left: 1.3cm; }
-  li.level-5 { margin-left: 1.6cm; }
-  li.level-6 { margin-left: 2cm; }
 
   .figure {
     margin: 0.3cm 0cm;
